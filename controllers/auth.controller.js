@@ -27,9 +27,10 @@ const signup = async (req, res) => {
 		}
 		if (admin) {
 			await user.setRoles([2]);
+			return res.status(201).json('user create successfuly');
 		}
-		await user.setRoles([1]);
 
+		await user.setRoles([1]);
 		return res.status(201).json('user create successfuly');
 	} catch (error) {
 		res.status(500).send(error);
