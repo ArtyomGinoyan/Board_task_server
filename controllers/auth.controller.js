@@ -12,7 +12,7 @@ const signup = async (req, res) => {
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		const { name, email, password } = req.body;
+		const { name, email, password, admin } = req.body;
 
 		const userStaff = {
 			name,
@@ -25,7 +25,9 @@ const signup = async (req, res) => {
 		if (!user) {
 			return res.status(409).send('Details are not correct');
 		}
-
+		if (admin) {
+			await user.setRoles([2]);
+		}
 		await user.setRoles([1]);
 
 		return res.status(201).json('user create successfuly');
