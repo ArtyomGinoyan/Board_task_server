@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 5506;
+
+global.__basedir = __dirname;
+
 const corsOptions = {
 	origin: process.env.ORIGIN,
 	credentials: true,
@@ -22,7 +25,7 @@ const User = db.user;
 
 // force: true will drop the table if it already exists
 db.sequelize
-	.sync({ force: true })
+	.sync({ force: false })
 	.then(() => {
 		console.log('db has been re-sync');
 		initial();
@@ -35,6 +38,7 @@ db.sequelize
 //routes
 require('./routes/auth.routes')(app);
 require('./routes/card.routes')(app);
+require('./routes/file.routes')(app);
 require('./routes/board.routes')(app);
 require('./routes/owner.routes')(app);
 require('./routes/column.routes')(app);
