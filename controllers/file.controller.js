@@ -20,7 +20,10 @@ const upload = async (req, res) => {
 		if (req.file == undefined) {
 			return res.status(400).send({ message: 'Please upload a file!' });
 		}
-
+		await File.create({
+			file_name: `${latestID}_${req.file.originalname}`,
+			cardId: req.params.id,
+		});
 		res.status(200).send({
 			message: `Uploaded the file successfully: ${req.latestID}_${req.file.originalname}`,
 		});
@@ -99,27 +102,10 @@ const remove = (req, res) => {
 	}
 };
 
-const removeSync = (req, res) => {
-	const fileName = req.params.name;
-	const directoryPath = __basedir + '/resources/static/assets/uploads/';
-
-	try {
-		fs.unlinkSync(directoryPath + fileName);
-
-		res.status(200).send({
-			message: 'File is deleted.',
-		});
-	} catch (err) {
-		res.status(500).send({
-			message: 'Could not delete the file. ' + err,
-		});
-	}
-};
 
 module.exports = {
 	upload,
 	getListFiles,
 	download,
 	remove,
-	removeSync,
 };
