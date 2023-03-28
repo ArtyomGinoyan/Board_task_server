@@ -18,15 +18,16 @@ const upload = async (req, res) => {
 		const latestID = await File.max('id');
 		if (!latestID) {
 			req.latestID = 1;
+		} else {
+			req.latestID = latestID + 1;
 		}
-		req.latestID = latestID + 1;
 		await uploadFileMiddleware(req, res);
 
 		if (req.file == undefined) {
 			return res.status(400).send({ message: 'Please upload a file!' });
 		}
 		await File.create({
-			file_name: `${latestID}_${req.file.originalname}`,
+			file_name: `${req.latestID}_${req.file.originalname}`,
 			cardId: req.params.id,
 		});
 		res.status(200).send({
@@ -69,7 +70,7 @@ const download = (req, res) => {
 		const fileName = req.params.name;
 		console.log(req.params.name, 'dddddddddddddddddddddddddddddddddddddddddddddddd');
 		const dirPath = `${__basedir}/resources/static/assets/uploads/card${req.params.id}/`;
-		if (fs.existsSync(dirPath+fileName)) {
+		if (fs.existsSync(dirPath + fileName)) {
 			console.log('file exists');
 		} else {
 			console.log('file does not exist');
