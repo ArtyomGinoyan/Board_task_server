@@ -8,6 +8,7 @@ let storage = multer.diskStorage({
 		cb(null, `${__basedir}/resources/static/assets/uploads/card${req.params.id}`);
 	},
 	filename: async (req, file, cb) => {
+		console.log(file.originalname,"originalname_-----------------------------------------------------------------");
 		const latestID = req.latestID;
 		cb(null, `${latestID}_${file.originalname}`);
 	},
