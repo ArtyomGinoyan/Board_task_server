@@ -12,12 +12,6 @@ const sequelize = new Sequelize('railway', process.env.DB_USER, process.env.DB_P
 	dialect: 'mysql',
 	port: process.env.DB_PORT,
 	operatorsAliases: false,
-	pool: {
-		max: config.pool.max,
-		min: config.pool.min,
-		acquire: config.pool.acquire,
-		idle: config.pool.idle,
-	},
 });
 
 const db = {};
