@@ -69,7 +69,11 @@ const download = (req, res) => {
 		const fileName = req.params.name;
 		console.log(req.params.name, 'dddddddddddddddddddddddddddddddddddddddddddddddd');
 		const dirPath = `${__basedir}/resources/static/assets/uploads/card${req.params.id}/`;
-
+		if (fs.existsSync(dirPath+fileName)) {
+			console.log('file exists');
+		} else {
+			console.log('file does not exist');
+		}
 		res.download(dirPath + fileName, fileName, (err) => {
 			if (err) {
 				res.status(500).send({

@@ -35,7 +35,7 @@ const removeCard = async (req, res) => {
 		if (!card) {
 			res.status(400).send({ message: 'remove card failed' });
 		}
-		const directoryPath = `${__basedir}/resources/static/assets/uploads/${id}`;
+		const directoryPath = `${__basedir}/resources/static/assets/uploads/card${id}`;
 		if (fs.existsSync(directoryPath)) {
 			rimraf(directoryPath, { recursive: true }, (err) => {
 				if (err) {
