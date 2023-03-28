@@ -13,7 +13,7 @@ const getOwnerData = async (req, res) => {
 		});
 		res.status(200).send(data);
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 

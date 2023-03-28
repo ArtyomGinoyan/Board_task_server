@@ -17,7 +17,7 @@ const getBoardData = async (req, res) => {
 		const finalData = data.sort((a, b) => a.id - b.id);
 		res.status(200).send(finalData);
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 

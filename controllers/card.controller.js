@@ -15,7 +15,7 @@ const createCard = async (req, res) => {
 		const card = await Card.create({ content, columnId, userId, position });
 		res.status(200).send(card);
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 
@@ -52,7 +52,7 @@ const removeCard = async (req, res) => {
 
 		res.status(200).json({ success: true });
 	} catch (error) {
-		res.status(500).json({ error: 'Server error' });
+		res.status(500).send(error.message);
 	}
 };
 
@@ -76,7 +76,7 @@ const updateCard = async (req, res) => {
 		const card = await Card.findByPk(id);
 		res.status(200).send(card);
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 

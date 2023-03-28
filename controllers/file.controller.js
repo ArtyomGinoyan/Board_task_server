@@ -10,11 +10,6 @@ const upload = async (req, res) => {
 		if (!fs.existsSync(dirPath)) {
 			fs.mkdirSync(dirPath);
 		}
-		if (fs.existsSync(dirPath)) {
-			console.log('Folder exists');
-		} else {
-			console.log('Folder does not exist');
-		}
 		const latestID = await File.max('id');
 		if (!latestID) {
 			req.latestID = 1;
@@ -61,20 +56,15 @@ const getListFiles = async (req, res) => {
 		}
 		res.status(200).send(files);
 	} catch (error) {
-		console.log(error);
+		res.status(500).send(error.message);
 	}
 };
 
 const download = (req, res) => {
 	try {
 		const fileName = req.params.name;
-		console.log(req.params.name, 'dddddddddddddddddddddddddddddddddddddddddddddddd');
 		const dirPath = `${__basedir}/resources/static/assets/uploads/card${req.params.id}/`;
-		if (fs.existsSync(dirPath + fileName)) {
-			console.log('file exists');
-		} else {
-			console.log('file does not exist');
-		}
+
 		res.download(dirPath + fileName, fileName, (err) => {
 			if (err) {
 				res.status(500).send({
@@ -83,7 +73,7 @@ const download = (req, res) => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
+		res.status(500).send(error.message);
 	}
 };
 
@@ -109,7 +99,7 @@ const remove = (req, res) => {
 			});
 		});
 	} catch (error) {
-		console.log(error);
+		res.status(500).send(error.message);
 	}
 };
 

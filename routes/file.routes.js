@@ -6,8 +6,8 @@ module.exports = (app) => {
 		res.header('Access-Control-Allow-Headers', 'x-access-token, Origin, Content-Type, Accept');
 		next();
 	});
-	app.post('/upload/:id', upload);
-	app.get('/files/:id', getListFiles);
-	app.get('/files/:name/:id', download);
-	app.delete('/files/:name/:cardId/:id', remove);
+	app.post('/upload/:id', verifyToken, upload);
+	app.get('/files/:id', verifyToken, getListFiles);
+	app.get('/files/:name/:id', verifyToken, download);
+	app.delete('/files/:name/:cardId/:id', verifyToken, remove);
 };

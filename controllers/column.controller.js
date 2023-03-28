@@ -14,7 +14,7 @@ const createColumn = async (req, res) => {
 		const column = await Column.create({ title });
 		res.status(200).send(column);
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 
@@ -38,7 +38,7 @@ const updateColumn = async (req, res) => {
 		const column = await Column.findByPk(id);
 		res.status(200).send(column);
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 

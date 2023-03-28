@@ -51,7 +51,6 @@ async function initial() {
 	try {
 		const password = process.env.USER_PASSWORD;
 		const name = process.env.USER_NAME;
-		console.log(name, password);
 		const email = process.env.USER_EMAIL;
 		const data = {
 			name,
@@ -68,7 +67,7 @@ async function initial() {
 			name: 'admin',
 		});
 		const setRoles = await user.setRoles([2]);
-		if (setRoles) console.log(setRoles, 'registered succesfuly....');
+		if (setRoles) console.log('registered succesfuly....');
 	} catch (err) {
 		console.log(err.message, 'error');
 	}

@@ -18,7 +18,7 @@ const updateCardPositions = async (columnId, startPosition, source, id) => {
 			}
 		}
 	} catch (error) {
-		res.status(500).json({ error: 'Server error' });
+		res.status(500).send(error.message);
 	}
 };
 
@@ -42,7 +42,7 @@ const moveCard = async (req, res) => {
 
 		res.status(200).json({ success: true });
 	} catch (error) {
-		res.status(500).json({ error: 'Server error' });
+		res.status(500).send(error.message);
 	}
 };
 

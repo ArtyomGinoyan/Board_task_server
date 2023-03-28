@@ -33,7 +33,7 @@ const signup = async (req, res) => {
 		await user.setRoles([1]);
 		return res.status(201).json('user create successfuly');
 	} catch (error) {
-		res.status(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 
@@ -139,19 +139,23 @@ const updateProfile = async (req, res) => {
 };
 
 const createToken = async (user) => {
-	let expiredAt = new Date();
+	try {
+		let expiredAt = new Date();
 
-	let _token = jwt.sign(
-		{ id: user.id, exp: Math.round(new Date(Date.now()) / 1000) + 1296000 },
-		config.secret
-	);
+		let _token = jwt.sign(
+			{ id: user.id, exp: Math.round(new Date(Date.now()) / 1000) + 1296000 },
+			config.secret
+		);
 
-	let refreshToken = await RefreshToken.create({
-		token: _token,
-		userId: user.id,
-		expiryDate: expiredAt.getTime(),
-	});
-	return refreshToken.token;
+		let refreshToken = await RefreshToken.create({
+			token: _token,
+			userId: user.id,
+			expiryDate: expiredAt.getTime(),
+		});
+		return refreshToken.token;
+	} catch (error) {
+		res.status(500).send({ message: error.message });
+	}
 };
 
 const logout = async (req, res) => {

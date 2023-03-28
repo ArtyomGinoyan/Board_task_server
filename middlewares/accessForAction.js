@@ -27,7 +27,7 @@ const accessForAction = async (req, res, next) => {
 		});
 		return;
 	} catch (error) {
-		res.json(500).send(error);
+		res.status(500).send(error.message);
 	}
 };
 
