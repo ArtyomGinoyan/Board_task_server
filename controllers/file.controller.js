@@ -1,7 +1,20 @@
 const uploadFileMiddleware = require('../middlewares/upload');
 const fs = require('fs');
+const db = require('../models');
+
+const { file: File } = db;
+
 const upload = async (req, res) => {
 	try {
+		const dirPath = `${__basedir}/resources/static/assets/uploads/${req.params.id}`;
+		if (!fs.existsSync(dirPath)) {
+			fs.mkdirSync(dirPath);
+		}
+		const latestID = await File.max('id');
+		if (latestID) {
+			req.latestID = 1;
+		}
+		req.latestID = latestID + 1;
 		await uploadFileMiddleware(req, res);
 
 		if (req.file == undefined) {
@@ -9,7 +22,7 @@ const upload = async (req, res) => {
 		}
 
 		res.status(200).send({
-			message: 'Uploaded the file successfully: ' + req.file.originalname,
+			message: `Uploaded the file successfully: ${req.latestID}_${req.file.originalname}`,
 		});
 	} catch (err) {
 		if (err.code == 'LIMIT_FILE_SIZE') {
@@ -24,57 +37,66 @@ const upload = async (req, res) => {
 	}
 };
 
-const getListFiles = (req, res) => {
-	const directoryPath = __basedir + '/resources/static/assets/uploads/';
-
-	fs.readdir(directoryPath, function (err, files) {
-		if (err) {
-			res.status(500).send({
-				message: 'Unable to scan files!',
-			});
-		}
-
-		let fileInfos = [];
-
-		files.forEach((file) => {
-			fileInfos.push({
-				name: file,
-				url: __basedir + file,
-			});
+const getListFiles = async (req, res) => {
+	try {
+		const files = await File.findAll({
+			where: {
+				cardId: req.params.id,
+			},
 		});
 
-		res.status(200).send(fileInfos);
-	});
+		if (!files) {
+			return res.status(500).send({
+				message: 'Unable to find files!',
+			});
+		}
+		res.status(200).send(files);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const download = (req, res) => {
-	const fileName = req.params.name;
-	const directoryPath = __basedir + '/resources/static/assets/uploads/';
+	try {
+		const fileName = req.params.name;
+		const dirPath = `${__basedir}/resources/static/assets/uploads/${req.params.id}/`;
 
-	res.download(directoryPath + fileName, fileName, (err) => {
-		if (err) {
-			res.status(500).send({
-				message: 'Could not download the file. ' + err,
-			});
-		}
-	});
+		res.download(dirPath + fileName, fileName, (err) => {
+			if (err) {
+				res.status(500).send({
+					message: 'Could not download the file. ' + err,
+				});
+			}
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const remove = (req, res) => {
-	const fileName = req.params.name;
-	const directoryPath = __basedir + '/resources/static/assets/uploads/';
+	try {
+		const { name, cardId, id } = req.params;
+		const dirPath = `${__basedir}/resources/static/assets/uploads/${cardId}/`;
 
-	fs.unlink(directoryPath + fileName, (err) => {
-		if (err) {
-			res.status(500).send({
-				message: 'Could not delete the file. ' + err,
+		fs.unlink(dirPath + name, async (err) => {
+			if (err) {
+				res.status(500).send({
+					message: 'Could not delete the file. ' + err,
+				});
+			}
+			await File.destroy({
+				where: {
+					id: id,
+				},
 			});
-		}
 
-		res.status(200).send({
-			message: 'File is deleted.',
+			res.status(200).send({
+				message: 'File is deleted.',
+			});
 		});
-	});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const removeSync = (req, res) => {
