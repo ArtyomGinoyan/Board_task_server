@@ -6,12 +6,12 @@ const { file: File } = db;
 
 const upload = async (req, res) => {
 	try {
-		const dirPath = `${__basedir}/resources/static/assets/uploads/${req.params.id}`;
+		const dirPath = `${__basedir}/resources/static/assets/uploads/card${req.params.id}`;
 		if (!fs.existsSync(dirPath)) {
 			fs.mkdirSync(dirPath);
 		}
 		const latestID = await File.max('id');
-		if (latestID) {
+		if (!latestID) {
 			req.latestID = 1;
 		}
 		req.latestID = latestID + 1;
@@ -62,7 +62,8 @@ const getListFiles = async (req, res) => {
 const download = (req, res) => {
 	try {
 		const fileName = req.params.name;
-		const dirPath = `${__basedir}/resources/static/assets/uploads/${req.params.id}/`;
+		console.log(req.params.name, "dddddddddddddddddddddddddddddddddddddddddddddddd");
+		const dirPath = `${__basedir}/resources/static/assets/uploads/card${req.params.id}/`;
 
 		res.download(dirPath + fileName, fileName, (err) => {
 			if (err) {
@@ -79,7 +80,7 @@ const download = (req, res) => {
 const remove = (req, res) => {
 	try {
 		const { name, cardId, id } = req.params;
-		const dirPath = `${__basedir}/resources/static/assets/uploads/${cardId}/`;
+		const dirPath = `${__basedir}/resources/static/assets/uploads/card${cardId}/`;
 
 		fs.unlink(dirPath + name, async (err) => {
 			if (err) {
