@@ -12,5 +12,7 @@ module.exports = (app) => {
 	app.put('/card/moved', verifyToken, accessForAction, moveCard);
 	app.post('/card/create', verifyToken, createCard);
 	app.put('/card/update/:id', verifyToken, accessForAction, updateCard);
-	app.delete('/card/remove/:id/:position/:columnId', verifyToken, accessForAction, removeCard);
+	app.delete('/card/remove/:id/:position/:columnId',
+	//  verifyToken, accessForAction,
+	  removeCard);
 };

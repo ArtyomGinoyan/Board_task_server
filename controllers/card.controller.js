@@ -1,7 +1,8 @@
 const db = require('../models');
+const fs = require('fs');
 const { updateCardPositions } = require('./cardsUpdate.controller');
 const { card: Card, role: Role } = db;
-
+const rimraf = require('rimraf');
 const createCard = async (req, res) => {
 	try {
 		if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
@@ -27,6 +28,17 @@ const removeCard = async (req, res) => {
 		});
 		if (!card) {
 			res.status(400).send({ message: 'remove card failed' });
+		}
+		const directoryPath = `${__basedir}/resources/static/assets/uploads/${id}`;
+		if (!fs.existsSync(directoryPath)) {
+			rimraf(directoryPath, { recursive: true }, function (err) {
+				if (err) {
+					console.log(err);
+					throw err;
+				}
+				// Directory has been deleted
+				console.log('Directory deleted successfully!');
+			});
 		}
 		// Update the positions of the remaining cards in the source column
 		await updateCardPositions(columnId, position, 'source', id);

@@ -1,13 +1,21 @@
 const util = require('util');
 const multer = require('multer');
+const db = require('../models');
+const { file: File } = db;
+
 const maxSize = 2 * 1024 * 1024;
 
 let storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, __basedir + '/resources/static/assets/uploads/');
+		cb(null, `${__basedir}/resources/static/assets/uploads/${req.params.id}`);
 	},
-	filename: (req, file, cb) => {
-		cb(null, file.originalname);
+	filename: async (req, file, cb) => {
+		const latestID = req.latestID;
+		await File.create({
+			file_name: `${latestID}_${file.originalname}`,
+			cardId: req.params.id,
+		});
+		cb(null, `${latestID}_${file.originalname}`);
 	},
 });
 
