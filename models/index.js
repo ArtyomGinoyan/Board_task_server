@@ -1,23 +1,24 @@
 const config = require('../config/db.config');
 const { Sequelize, DataTypes } = require('sequelize');
 
-const sequelize = new Sequelize('board', 'root', 'root12345', {
-	host: 'localhost',
-	dialect: config.dialect,
-});
-
-// const sequelize = new Sequelize('railway', process.env.DB_USER, process.env.DB_PASSWORD, {
-// 	host: process.env.DB_HOST,
-// 	dialect: 'mysql',
-// 	port: process.env.DB_PORT,
-// operatorsAliases: false,
-// pool: {
-//     max: config.pool.max,
-//     min: config.pool.min,
-//     acquire: config.pool.acquire,
-//     idle: config.pool.idle,
-// },
+// for local development
+// const sequelize = new Sequelize('board', 'root', 'root12345', {
+// 	host: 'localhost',
+// 	dialect: config.dialect,
 // });
+
+const sequelize = new Sequelize('railway', process.env.DB_USER, process.env.DB_PASSWORD, {
+	host: process.env.DB_HOST,
+	dialect: 'mysql',
+	port: process.env.DB_PORT,
+	operatorsAliases: false,
+	pool: {
+		max: config.pool.max,
+		min: config.pool.min,
+		acquire: config.pool.acquire,
+		idle: config.pool.idle,
+	},
+});
 
 const db = {};
 db.Sequelize = Sequelize;
