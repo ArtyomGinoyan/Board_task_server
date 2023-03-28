@@ -25,7 +25,7 @@ const User = db.user;
 
 // force: true will drop the table if it already exists
 db.sequelize
-	.sync({ force: false })
+	.sync({ force: true })
 	.then(() => {
 		console.log('db has been re-sync');
 		initial();
