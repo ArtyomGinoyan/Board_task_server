@@ -5,7 +5,7 @@ const maxSize = 2 * 1024 * 1024;
 
 let storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, `${__basedir}/resources/static/assets/uploads/${req.params.id}`);
+		cb(null, `${__basedir}/resources/static/assets/uploads/card${req.params.id}`);
 	},
 	filename: async (req, file, cb) => {
 		const latestID = req.latestID;
