@@ -10,6 +10,11 @@ const upload = async (req, res) => {
 		if (!fs.existsSync(dirPath)) {
 			fs.mkdirSync(dirPath);
 		}
+		if (fs.existsSync(dirPath)) {
+			console.log('Folder exists');
+		} else {
+			console.log('Folder does not exist');
+		}
 		const latestID = await File.max('id');
 		if (!latestID) {
 			req.latestID = 1;
@@ -62,7 +67,7 @@ const getListFiles = async (req, res) => {
 const download = (req, res) => {
 	try {
 		const fileName = req.params.name;
-		console.log(req.params.name, "dddddddddddddddddddddddddddddddddddddddddddddddd");
+		console.log(req.params.name, 'dddddddddddddddddddddddddddddddddddddddddddddddd');
 		const dirPath = `${__basedir}/resources/static/assets/uploads/card${req.params.id}/`;
 
 		res.download(dirPath + fileName, fileName, (err) => {
@@ -102,7 +107,6 @@ const remove = (req, res) => {
 		console.log(error);
 	}
 };
-
 
 module.exports = {
 	upload,
