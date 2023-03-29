@@ -2,7 +2,7 @@ const db = require('../models');
 
 const { user: User } = db;
 
-const getOwnerData = async (req, res) => {
+const getCardOwnerData = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const data = await User.findOne({
@@ -18,5 +18,5 @@ const getOwnerData = async (req, res) => {
 };
 
 module.exports = {
-	getOwnerData,
+	getCardOwnerData,
 };

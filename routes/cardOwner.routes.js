@@ -1,5 +1,5 @@
 const { verifyToken } = require('../middlewares/verifyToken');
-const { getOwnerData } = require('../controllers/owner.controller');
+const { getCardOwnerData } = require('../controllers/cardOwner.controller');
 
 module.exports = (app) => {
 	app.use((req, res, next) => {
@@ -7,5 +7,5 @@ module.exports = (app) => {
 		next();
 	});
 
-	app.get('/card/owner/:id', verifyToken, getOwnerData);
+	app.get('/card/owner/:id', verifyToken, getCardOwnerData);
 };

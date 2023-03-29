@@ -40,8 +40,8 @@ require('./routes/auth.routes')(app);
 require('./routes/card.routes')(app);
 require('./routes/file.routes')(app);
 require('./routes/board.routes')(app);
-require('./routes/owner.routes')(app);
 require('./routes/column.routes')(app);
+require('./routes/cardOwner.routes')(app);
 
 app.all('*', (req, res) => res.status(404).send({ error: `URL ${req.url} not found` }));
 
