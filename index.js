@@ -9,8 +9,10 @@ global.__basedir = __dirname;
 
 const corsOptions = {
 	origin: process.env.ORIGIN,
+	// origin: 'http://localhost:3000',
 	credentials: true,
 };
+
 
 const app = express();
 app.use(express.json());
@@ -25,7 +27,7 @@ const User = db.user;
 
 // force: true will drop the table if it already exists
 db.sequelize
-	.sync({ force: false })
+	.sync({ force: true })
 	.then(() => {
 		console.log('db has been re-sync');
 		initial();
